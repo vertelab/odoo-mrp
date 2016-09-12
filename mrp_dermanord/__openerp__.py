@@ -27,6 +27,9 @@
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
 'depends': ['mrp'],
-'data': ['mrp_dermanord_view.xml'],
+'data': [
+    'mrp_dermanord_view.xml',
+    'views/report_mrporder.xml',
+    ],
 'installable': True,
 }
