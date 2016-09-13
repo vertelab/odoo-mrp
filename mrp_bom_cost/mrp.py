@@ -26,31 +26,33 @@ _logger = logging.getLogger(__name__)
 class mrp_production_product_line(models.Model):
     _inherit = 'mrp.production.product.line'
 
-    line_uom_cost = fields.Flcd oat(string='Unit Cost', related='product_id.standard_price')
-    line_material_cost = fields.Float(string='Material Cost', compute='_line_material_cal')
-
     @api.one
-    def _line_material_cal(self):
-        self.line_material_cost = self.product_id.standard_price * self.product_qty
+    def _uom_cost(self):
+        self.uom_cost = self.product_uom._compute_price(self.product_id.uom_id.id, self.product_id.standard_price, to_uom_id=self.product_uom.id)
+    uom_cost = fields.Float(string='Unit Cost',compute="_uom_cost")
+    @api.one
+    def _material_cost(self):
+        self.material_cost = self.product_qty * self.uom_cost
+    material_cost = fields.Float(string='Material Cost', compute='_material_cost')
 
 class mrp_bom(models.Model):
     _inherit = 'mrp.bom'
 
     @api.one
     def _material_cost(self):
-        self.product_cost = sum([l.material_cost for l in self.bom_line_ids])
+        self.material_cost = sum([l.material_cost for l in self.bom_line_ids])
     material_cost = fields.Float(string='Material Cost', compute="_material_cost")
-   
+
 
 class mrp_bom_line(models.Model):
     _inherit = 'mrp.bom.line'
 
     @api.one
     def _uom_cost(self):
-        self.line_uom_cost = round(self.product_id.standard_price * self.product_uom.factor,self.product_uom.rounding) * 750.0
-    uom_cost = fields.Float(string='Unit Cost',compute="_line_uom_cost")
+        self.uom_cost = self.product_uom._compute_price(self.product_id.uom_id.id, self.product_id.standard_price, to_uom_id=self.product_uom.id)
+    uom_cost = fields.Float(string='Unit Cost',compute="_uom_cost")
     @api.one
     def _material_cost(self):
-        self.line_material_cost = self.product_id.standard_price * self.line_uom_cost
+        self.material_cost = self.product_qty * self.uom_cost
     material_cost = fields.Float(string='Material Cost', compute='_material_cost')
 

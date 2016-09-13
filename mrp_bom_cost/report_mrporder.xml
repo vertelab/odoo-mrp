@@ -3,6 +3,7 @@
     <data>
         <template id="report_mrporder" inherit_id="mrp.report_mrporder">
             <xpath expr="//thead/tr/th[@class='text-right']" position="after">
+                <th class="text-center"><strong>Cost Price</strong></th>
                 <th class="text-center"><strong>Unit Price</strong></th>
                 <th class="text-center"><strong>Material Cost</strong></th>
             </xpath>
@@ -11,6 +12,9 @@
                     <span t-field="line.product_id.standard_price"/>
                 </td>
                 <td class="text-center">
+                    <span t-esc="round(line.product_uom._compute_price(line.product_id.uom_id.id, line.product_id.standard_price, to_uom_id=line.product_uom.id))"/>
+                </td>
+                <td class="text-right">
                     <span t-esc="sum([q.inventory_value for q in line.reserved_quant_ids])"/>
                 </td>
             </xpath>
@@ -20,12 +24,13 @@
                     <td/>
                     <td/>
                     <td/>
-                    <td>
+                    <td/>
+                    <td class="text-right">
                         <t t-set="total_cost" t-value="0"/>
                         <t t-foreach="o.move_lines" t-as="line">
                             <t t-set="total_cost" t-value="total_cost + sum([q.inventory_value for q in line.reserved_quant_ids])"/>
                         </t>
-                        <span><strong>Total: <t t-esc="total_cost"/></strong></span>
+                        <span><strong><t t-esc="total_cost"/></strong></span>
                     </td>
                 </tr>
             </xpath>
