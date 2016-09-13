@@ -26,7 +26,7 @@ _logger = logging.getLogger(__name__)
 class mrp_production_product_line(models.Model):
     _inherit = 'mrp.production.product.line'
 
-    line_uom_cost = fields.Float(string='Unit Cost', related='product_id.standard_price')
+    line_uom_cost = fields.Flcd oat(string='Unit Cost', related='product_id.standard_price')
     line_material_cost = fields.Float(string='Material Cost', compute='_line_material_cal')
 
     @api.one
