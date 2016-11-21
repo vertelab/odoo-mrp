@@ -43,3 +43,8 @@ class mrp_bom_line(models.Model):
     @api.one
     def _line_material_cal(self):
         self.line_material_cost = self.product_id.standard_price * self.product_qty
+
+class mrp_production(models.Model):
+    _inherit = 'mrp.production'
+    
+    lot_number = fields.Char(string="Lot number")

@@ -20,10 +20,13 @@
 ##############################################################################
 {
 'name': 'Dermanord MRP',
-'version': '0.1',
+'version': '0.2',
 'summary': '',
 'category': '',
-'description': """""",
+'description': """
+     * line_unity_cost and line_material_cost in BOM
+     * lot_number in production order
+    """,
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
 'depends': ['mrp'],
