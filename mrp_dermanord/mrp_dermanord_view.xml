@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <record id="mrp_production_form_view_additional" model="ir.ui.view">
-      <field name="name">mrp.production.form</field>
+    <record id="mrp_production_form_view" model="ir.ui.view">
+      <field name="name">mrp.production.form.lot.inherit</field>
       <field name="model">mrp.production</field>
       <field name="inherit_id" ref="mrp.mrp_production_form_view" />
       <field name="arch" type="xml">
         <xpath expr="//field[@name='move_lines']/tree/field[@name='product_uom']" position="after">
           <field name="location_id" />
         </xpath>
+<!--
+        <field name="product_lines" position="replace">
+          <field name="product_lines">
+            <tree edit="bottom">
+              <field name="product_id" />
+              <field name="product_qty" />
+              <field name="product_uom" />
+              <field name="line_unity_cost" />
+              <field name="line_material_cost" sum="Total Cost" />
+              <field name="lot_number" />
+            </tree>
+          </field>
+        </field>
+-->
+        <field name="origin" position="after">
+          <field name="lot_number" />
+        </field>
+
       </field>
     </record>
+
     <record id="mrp_production_product_tree_view" model="ir.ui.view">
       <field name="name">mrp.production.product.line.tree.inherit</field>
       <field name="model">mrp.production.product.line</field>
@@ -19,6 +38,7 @@
         <field name="product_uos" position="after">
           <field name="line_unity_cost" />
           <field name="line_material_cost" sum="Total Cost" />
+          <field name="lot_number" />
         </field>
       </field>
     </record>
@@ -33,16 +53,7 @@
         </xpath>
       </field>
     </record>
-    <record id="mrp_production_form_view" model="ir.ui.view">
-      <field name="name">mrp.production.form.lot.inherit</field>
-      <field name="model">mrp.production</field>
-      <field name="inherit_id" ref="mrp.mrp_production_form_view" />
-      <field name="arch" type="xml">
-        <field name="origin" position="after">
-          <field name="lot_number" />
-        </field>
-      </field>
-    </record>
+
     <record id="mrp_production_tree_view" model="ir.ui.view">
       <field name="name">mrp.production.tree.lot.inherit</field>
       <field name="model">mrp.production</field>

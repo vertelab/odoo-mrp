@@ -28,7 +28,8 @@ class mrp_production_product_line(models.Model):
 
     line_unity_cost = fields.Float(string='Unity Cost', related='product_id.standard_price')
     line_material_cost = fields.Float(string='Material Cost', compute='_line_material_cal')
-
+    lot_number = fields.Char(string="Lot number")
+    
     @api.one
     def _line_material_cal(self):
         self.line_material_cost = self.product_id.standard_price * self.product_qty
@@ -48,3 +49,6 @@ class mrp_production(models.Model):
     _inherit = 'mrp.production'
     
     lot_number = fields.Char(string="Lot number")
+    
+
+    
