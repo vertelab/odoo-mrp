@@ -33,6 +33,7 @@
 'data': [
     'mrp_dermanord_view.xml',
     'views/report_mrporder.xml',
+    'views/report_po_slip.xml',
     ],
 'installable': True,
 }
