@@ -56,11 +56,9 @@ class MRPProduction(models.Model):
     
     @api.multi
     def action_production_end(self):
-        _logger.warn('\n\n\nhej hej!\n\n\n')
         res = super(MRPProduction, self).action_production_end()
         for record in self:
             for picking in record.picking_ids:
-                _logger.warn(picking)
                 if picking.state in ('draft', 'confirmed'):
                     picking.action_assign()
         return res
