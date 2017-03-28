@@ -1,5 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
+<<<<<<< HEAD
 # 	* hr_payroll_messagemenu
 #
 msgid ""
@@ -8,10 +9,21 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-01-31 09:11+0000\n"
 "PO-Revision-Date: 2017-01-31 10:22+0100\n"
+=======
+#	* mrp_messagemenu
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0-20161208\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-28 16:19+0000\n"
+"PO-Revision-Date: 2017-02-28 16:19+0000\n"
+>>>>>>> 2fa84b6985c6e0c131c12a1e8050a58396716421
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
+<<<<<<< HEAD
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
 "Language: sv\n"
@@ -161,3 +173,33 @@ msgstr "_Byt Projekt"
 #: view:messagemenu.change_project:hr_payroll_messagemenu.act_messagemenu_change_project
 msgid "or"
 msgstr "eller"
+=======
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mrp_messagemenu
+#: model:ir.actions.act_window,help:mrp_messagemenu.mrp_production_action
+msgid "<p class=\"oe_view_nocontent_create\">\n"
+"            Click to create a manufacturing order. \n"
+"          </p><p>\n"
+"            A manufacturing order, based on a bill of materials, will\n"
+"            consume raw materials and produce finished products.\n"
+"          </p><p>\n"
+"            Manufacturing orders are usually proposed automatically based\n"
+"            on customer requirements or automated rules like the minimum\n"
+"            stock rule.\n"
+"          </p>\n"
+"        "
+msgstr ""
+
+#. module: mrp_messagemenu
+#: model:ir.actions.act_window,name:mrp_messagemenu.mrp_production_action
+msgid "Manufacturing Orders"
+msgstr "Tillverkningsordrar"
+
+#. module: mrp_messagemenu
+#: model:ir.ui.menu,name:mrp_messagemenu.menu_mrp_production
+msgid "Production Calendar"
+msgstr "Tillverkningskalender"
+
+>>>>>>> 2fa84b6985c6e0c131c12a1e8050a58396716421

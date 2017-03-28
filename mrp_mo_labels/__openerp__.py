@@ -2,7 +2,7 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution, third party addon
-# Copyright (C) 2017- Vertel AB (<http://vertel.se>).
+# Copyright (C) 2004-2017 Vertel AB (<http://vertel.se>).
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -19,29 +19,18 @@
 #
 ##############################################################################
 {
-<<<<<<< HEAD
-'name': 'Event Message Menu',
+'name': 'MRP Pack labels',
 'version': '0.1',
-'summary': 'Menu for event calendar in message menu',
-'category': 'event',
-'description': """Menu for event calendar in message menu
-=======
-'name': 'Manufacturing Message Menu',
-'version': '0.1',
-'summary': 'Menu for event production orders in message menu',
-'category': 'event',
-'description': """Menu for production calendar in message menu
->>>>>>> 2fa84b6985c6e0c131c12a1e8050a58396716421
-
-""",
+'summary': '',
+'category': '',
+'description': """
+     * Labels for produced products with batch number / lot_number
+    """,
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
-<<<<<<< HEAD
-'depends': ['event',],
-'data': ['event_messagemenu_view.xml', 'event_messagemenu_data.xml',],
-=======
-'depends': ['mrp',],
-'data': ['mrp_messagemenu_view.xml'],
->>>>>>> 2fa84b6985c6e0c131c12a1e8050a58396716421
+'depends': ['mrp','report_glabels'],
+'data': [
+    'mrp_report.xml',
+    ],
 'installable': True,
 }

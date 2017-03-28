@@ -29,7 +29,7 @@ class mrp_production_product_line(models.Model):
     line_unity_cost = fields.Float(string='Unity Cost', related='product_id.standard_price')
     line_material_cost = fields.Float(string='Material Cost', compute='_line_material_cal')
     lot_number = fields.Char(string="Lot number")
-    
+
     @api.one
     def _line_material_cal(self):
         self.line_material_cost = self.product_id.standard_price * self.product_qty
@@ -45,10 +45,16 @@ class mrp_bom_line(models.Model):
     def _line_material_cal(self):
         self.line_material_cost = self.product_id.standard_price * self.product_qty
 
+
 class mrp_production(models.Model):
     _inherit = 'mrp.production'
-    
-    lot_number = fields.Char(string="Lot number")
-    
 
-    
+    lot_number = fields.Char(string="Lot number")
+
+    @api.multi
+    def product_id_change(self, product_id, product_qty=0):
+        res = super(mrp_production, self).product_id_change(product_id, product_qty=0)
+        if product_id:
+            res['value']['location_dest_id'] = self.env['product.product'].browse(product_id).property_stock_production.id
+        return res
+

@@ -2,6 +2,7 @@
 <openerp>
   <data>
     
+<<<<<<< HEAD
     
         <!-- Events Organisation/CONFIGURATION/EVENTS  -->
         <record model="ir.actions.act_window" id="action_event_view">
@@ -37,3 +38,32 @@
 
   </data>
 </openerp>
+=======
+    <record id="mrp_production_action" model="ir.actions.act_window">
+        <field name="name">Manufacturing Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.production</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">calendar,tree,form,graph,gantt</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="mrp.view_mrp_production_filter"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to create a manufacturing order. 
+          </p><p>
+            A manufacturing order, based on a bill of materials, will
+            consume raw materials and produce finished products.
+          </p><p>
+            Manufacturing orders are usually proposed automatically based
+            on customer requirements or automated rules like the minimum
+            stock rule.
+          </p>
+        </field>
+    </record>
+    
+    <menuitem name="Production Calendar" id="menu_mrp_production" action="mrp_production_action" parent="mail.mail_my_stuff"  sequence="14"/>
+
+  </data>
+</openerp>
+>>>>>>> 2fa84b6985c6e0c131c12a1e8050a58396716421
