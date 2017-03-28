@@ -2,43 +2,7 @@
 <openerp>
   <data>
     
-<<<<<<< HEAD
-    
-        <!-- Events Organisation/CONFIGURATION/EVENTS  -->
-        <record model="ir.actions.act_window" id="action_event_view">
-           <field name="name">Events</field>
-           <field name="type">ir.actions.act_window</field>
-           <field name="res_model">event.event</field>
-           <field name="view_type">form</field>
-           <field name="view_mode">calendar,kanban,tree,form</field>
-           <field name="context">{"search_default_upcoming":1}</field>
-           <field name="view_id" ref="event.view_event_calendar"/>
-           <field name="search_view_id" ref="event.view_event_search"/>
-           <field name="help" type="html">
-             <p class="oe_view_nocontent_create">
-               Click to add a new event.
-             </p><p>
-               Odoo helps you schedule and efficiently organize your events:
-               track subscriptions and participations, automate the confirmation emails,
-               sell tickets, etc.
-             </p>
-           </field>
-        </record>
 
-        <act_window
-            id="act_register_event_partner"
-            name="Subscribe"
-            res_model="event.registration"
-            src_model="res.partner"
-            view_mode="tree,form,calendar,graph"
-            context="{'search_default_partner_id': [active_id], 'default_partner_id': active_id}"
-            view_type="form"/>
-
-        <menuitem name="Events" id="menu_event_event" action="action_event_view" parent="mail.mail_my_stuff"  sequence="90"/>
-
-  </data>
-</openerp>
-=======
     <record id="mrp_production_action" model="ir.actions.act_window">
         <field name="name">Manufacturing Orders</field>
         <field name="type">ir.actions.act_window</field>
@@ -66,4 +30,3 @@
 
   </data>
 </openerp>
->>>>>>> 2fa84b6985c6e0c131c12a1e8050a58396716421
