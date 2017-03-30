@@ -26,5 +26,5 @@ _logger = logging.getLogger(__name__)
 #~ class mrp_repair(models.Model):
     #~ _inherit = 'mrp.repair'
 
-    #create procurement(procurement.order): group_id, warehouse_id, rule_id(get from company warehouse)
+    #create procurement(procurement.order): group_id, location_id
 
