@@ -2,6 +2,7 @@
 <openerp>
   <data>
     
+
     <record id="mrp_production_action" model="ir.actions.act_window">
         <field name="name">Manufacturing Orders</field>
         <field name="type">ir.actions.act_window</field>

@@ -2,7 +2,7 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution, third party addon
-# Copyright (C) 2017- Vertel AB (<http://vertel.se>).
+# Copyright (C) 2004-2017 Vertel AB (<http://vertel.se>).
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -19,15 +19,18 @@
 #
 ##############################################################################
 {
-'name': 'Manufacturing Message Menu',
+'name': 'MRP Pack labels',
 'version': '0.1',
-'summary': 'Menu for production orders in message menu',
-'category': 'mrp',
-'description': """Menu for production calendar in message menu
-""",
+'summary': '',
+'category': '',
+'description': """
+     * Labels for produced products with batch number / lot_number
+    """,
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
-'depends': ['mrp',],
-'data': ['mrp_messagemenu_view.xml'],
+'depends': ['mrp','report_glabels'],
+'data': [
+    'mrp_report.xml',
+    ],
 'installable': True,
 }

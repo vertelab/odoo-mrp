@@ -1,0 +1,32 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#   * mrp_dermanord
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0-20161126\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-05 07:33+0000\n"
+"PO-Revision-Date: 2016-12-05 07:33+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mrp_dermanord
+#: view:website:mrp_dermanord.report_po_slip
+msgid "Lot nbr:"
+msgstr "Lot nbr:"
+
+#. module: mrp_dermanord
+#: field:mrp.production,lot_number:0
+#: field:mrp.production.product.line,lot_number:0
+msgid "Lot number"
+msgstr "Lot nummer"
+
+#. module: mrp_dermanord
+#: model:ir.actions.report.xml,name:mrp_dermanord.action_report_po_slip
+msgid "PO Slip"
+msgstr "PO Följesedel"
