@@ -23,8 +23,20 @@ from openerp import models, fields, api, _
 import logging
 _logger = logging.getLogger(__name__)
 
-#~ class mrp_repair(models.Model):
-    #~ _inherit = 'mrp.repair'
+class mrp_repair(models.Model):
+    _inherit = 'mrp.repair'
 
-    #create procurement(procurement.order): group_id, location_id
-
+    @api.multi
+    def action_confirm(self):
+        res = super(mrp_repair, self).action_confirm()
+        group = self.env['procurement.group'].create({})
+        vals = {
+            'name': 'Procurement %s' %self.product_id.name,
+            'product_id': self.product_id.id,
+            'product_qty': self.product_qty,
+            'product_uom': self.product_uom.id,
+            'location_id': self.location_id.id,
+            'group_id': group.id,
+        }
+        group = self.env['procurement.order'].create(vals)
+        return res
