@@ -1,0 +1,33 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* mrp_runex
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0-20170514\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-17 06:37+0000\n"
+"PO-Revision-Date: 2017-05-17 06:37+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mrp_runex
+#: field:mrp.production,qty_accessible:0
+#: field:product.product,qty_accessible:0
+msgid "Accessible Quantity"
+msgstr ""
+
+#. module: mrp_runex
+#: model:ir.model,name:mrp_runex.model_mrp_production
+msgid "Manufacturing Order"
+msgstr ""
+
+#. module: mrp_runex
+#: model:ir.model,name:mrp_runex.model_product_product
+msgid "Product"
+msgstr ""
+
