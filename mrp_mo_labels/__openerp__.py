@@ -27,6 +27,7 @@
      * Labels for produced products with batch number / lot_number
     """,
 'author': 'Vertel AB',
+    'license': 'AGPL-3',
 'website': 'http://www.vertel.se',
 'depends': ['mrp','report_glabels'],
 'data': [

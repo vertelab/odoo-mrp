@@ -26,6 +26,7 @@
 'description': """Menu for production calendar in message menu
 """,
 'author': 'Vertel AB',
+    'license': 'AGPL-3',
 'website': 'http://www.vertel.se',
 'depends': ['mrp',],
 'data': ['mrp_messagemenu_view.xml'],
