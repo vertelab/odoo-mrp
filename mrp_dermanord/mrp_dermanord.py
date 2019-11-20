@@ -23,6 +23,18 @@ from openerp import models, fields, api, _
 import logging
 _logger = logging.getLogger(__name__)
 
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    buffer_location_id = fields.Many2one(string='Buffer Location', comodel_name='stock.location', help="...")
+    
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    buffer_location_id = fields.Many2one(string='Buffer Location', comodel_name='stock.location', help="...")
+
+
 class mrp_production_product_line(models.Model):
     _inherit = 'mrp.production.product.line'
 
@@ -54,7 +66,8 @@ class mrp_production(models.Model):
     @api.multi
     def product_id_change(self, product_id, product_qty=0):
         res = super(mrp_production, self).product_id_change(product_id, product_qty=0)
+        
         if product_id:
-            res['value']['location_dest_id'] = self.env['product.product'].browse(product_id).property_stock_production.id
-        return res
+            res['value']['location_dest_id'] = self.env['product.product'].browse(product_id).buffer_location_id.id
+            return res
 
