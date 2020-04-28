@@ -2,19 +2,19 @@
 <openerp>
     <data>
         <template id="report_mrporder" inherit_id="mrp.report_mrporder">
-            <xpath expr="//thead/tr/th[@class='text-right']" position="after">
+  <!--           <xpath expr="//thead/tr/th[@class='text-right']" position="after">
                 <th class="text-center"><strong>Unit Price</strong></th>
                 <th class="text-center"><strong>Material Cost</strong></th>
-            </xpath>
-            <xpath expr="//tbody/t/tr[@t-foreach='o.move_lines']/td[@class='text-right']" position="after">
+            </xpath> -->
+<!--             <xpath expr="//tbody/t/tr[@t-foreach='o.move_lines']/td[@class='text-right']" position="after">
                 <td class="text-center">
                     <span t-field="line.product_id.standard_price"/>
                 </td>
                 <td class="text-center">
                     <span t-esc="sum([q.inventory_value for q in line.reserved_quant_ids])"/>
                 </td>
-            </xpath>
-            <xpath expr="//t[@t-if='o.move_lines']" position="inside">
+            </xpath> -->
+<!--             <xpath expr="//t[@t-if='o.move_lines']" position="inside">
                 <tr/>
                 <tr>
                     <td/>
@@ -28,7 +28,7 @@
                         <span><strong>Total: <t t-esc="total_cost"/></strong></span>
                     </td>
                 </tr>
-            </xpath>
+            </xpath> -->
         </template>
     </data>
 </openerp>

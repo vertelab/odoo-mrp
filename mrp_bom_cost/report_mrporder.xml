@@ -1,39 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
-        <template id="report_mrporder" inherit_id="mrp.report_mrporder">
-            <xpath expr="//thead/tr/th[@class='text-right']" position="after">
-                <th class="text-center"><strong>Cost Price</strong></th>
-                <th class="text-center"><strong>Unit Price</strong></th>
-                <th class="text-center"><strong>Material Cost</strong></th>
-            </xpath>
-            <xpath expr="//tbody/t/tr[@t-foreach='o.move_lines']/td[@class='text-right']" position="after">
-                <td class="text-center">
-                    <span t-field="line.product_id.standard_price"/>
-                </td>
-                <td class="text-center">
-                    <span t-esc="round(line.product_uom._compute_price(line.product_id.uom_id.id, line.product_id.standard_price, to_uom_id=line.product_uom.id))"/>
-                </td>
-                <td class="text-right">
-                    <span t-esc="sum([q.inventory_value for q in line.reserved_quant_ids])"/>
-                </td>
-            </xpath>
-            <xpath expr="//t[@t-if='o.move_lines']" position="inside">
-                <tr/>
-                <tr>
-                    <td/>
-                    <td/>
-                    <td/>
-                    <td/>
-                    <td class="text-right">
-                        <t t-set="total_cost" t-value="0"/>
-                        <t t-foreach="o.move_lines" t-as="line">
-                            <t t-set="total_cost" t-value="total_cost + sum([q.inventory_value for q in line.reserved_quant_ids])"/>
-                        </t>
-                        <span><strong><t t-esc="total_cost"/></strong></span>
-                    </td>
-                </tr>
-            </xpath>
-        </template>
-    </data>
+  <data>
+    <template id="report_mrporder" inherit_id="mrp.report_mrporder">
+      <!--     <xpath expr="//thead/tr/th[@class='text-right']" position="after">
+           <th class="text-center"><strong>Cost Price</strong></th>
+           <th class="text-center"><strong>Unit Price</strong></th>
+           <th class="text-center"><strong>Material Cost</strong></th>
+           </xpath> -->
+      <!--             <xpath expr="//tbody/t/tr[@t-foreach='o.move_lines']/td[@class='text-right']" position="after">
+           <td class="text-center">
+           <span t-field="line.product_id.standard_price"/>
+           </td>
+           <td class="text-center">
+           <span t-esc="round(line.product_uom._compute_price(line.product_id.uom_id.id, line.product_id.standard_price, to_uom_id=line.product_uom.id))"/>
+           </td>
+           <td class="text-right">
+           <span t-esc="sum([q.inventory_value for q in line.reserved_quant_ids])"/>
+           </td>
+           <td>
+           <th class="text-center"><strong>Unit Price</strong></th>
+           </td>
+           
+           </xpath> -->
+      <!--             <xpath expr="//t[@t-if='o.move_lines']" position="inside">
+           <tr/>
+           <tr>
+           <td/>
+           <td/>
+           <td/>
+           <td/>
+           <td class="text-right">
+           <t t-set="total_cost" t-value="0"/>
+           <t t-foreach="o.move_lines" t-as="line">
+           <t t-set="total_cost" t-value="total_cost + sum([q.inventory_value for q in line.reserved_quant_ids])"/>
+           </t>
+           <span><strong><t t-esc="total_cost"/></strong></span>
+           </td>
+           </tr>
+           </xpath> -->
+      <xpath expr="//thead/tr/th" position="before">
+        <th />
+      </xpath>
+      <xpath expr="//t[@t-if='o.move_lines2']" position="replace">
+        <t t-if="o.move_lines2">
+          <tr>
+            <td />
+            <td colspan="4">
+              <strong>Consumed Products</strong>
+            </td>
+          </tr>
+          <tr t-foreach="o.move_lines2" t-as="line2">
+            <td>
+              <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', line2.product_id.ean13, 600, 100)" style="width:300px;height:50px" />
+            </td>
+            <td>
+              <span t-field="line2.product_id.code" />
+              <span t-field="line2.product_id.name" />
+            </td>
+            <td class="text-right">
+              <span t-field="line2.product_uom_qty" />
+              <span t-field="line2.product_uom.name" />
+            </td>
+            <td class="text-center" groups="stock.group_locations">
+              <span t-field="line2.location_id.name" />
+            </td>
+            <td class="text-center" groups="stock.group_locations">
+              <span t-field="line2.location_dest_id.name" />
+            </td>
+          </tr>
+        </t>
+      </xpath>
+    </template>
+  </data>
 </openerp>

@@ -38,8 +38,8 @@ class ProductProduct(models.Model):
 class mrp_production_product_line(models.Model):
     _inherit = 'mrp.production.product.line'
 
-    line_unity_cost = fields.Float(string='Unity Cost', related='product_id.standard_price')
-    line_material_cost = fields.Float(string='Material Cost', compute='_line_material_cal')
+    # line_unity_cost = fields.Float(string='Unity Cost', related='product_id.standard_price')
+    # line_material_cost = fields.Float(string='Material Cost', compute='_line_material_cal')
     lot_number = fields.Char(string="Lot number")
 
     @api.one
@@ -50,8 +50,8 @@ class mrp_production_product_line(models.Model):
 class mrp_bom_line(models.Model):
     _inherit = 'mrp.bom.line'
 
-    line_unity_cost = fields.Float(string='Unity Cost', related='product_id.standard_price')
-    line_material_cost = fields.Float(string='Material Cost', compute='_line_material_cal')
+    # line_unity_cost = fields.Float(string='Unity Cost', related='product_id.standard_price')
+    # line_material_cost = fields.Float(string='Material Cost', compute='_line_material_cal')
 
     @api.one
     def _line_material_cal(self):

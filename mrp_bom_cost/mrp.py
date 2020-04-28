@@ -26,33 +26,33 @@ _logger = logging.getLogger(__name__)
 class mrp_production_product_line(models.Model):
     _inherit = 'mrp.production.product.line'
 
-    @api.one
-    def _uom_cost(self):
-        self.uom_cost = self.product_uom._compute_price(self.product_id.uom_id.id, self.product_id.standard_price, to_uom_id=self.product_uom.id)
-    uom_cost = fields.Float(string='Unit Cost',compute="_uom_cost")
-    @api.one
-    def _material_cost(self):
-        self.material_cost = self.product_qty * self.uom_cost
-    material_cost = fields.Float(string='Material Cost', compute='_material_cost')
+#     @api.one
+#     def _uom_cost(self):
+#         self.uom_cost = self.product_uom._compute_price(self.product_id.uom_id.id, self.product_id.standard_price, to_uom_id=self.product_uom.id)
+#     uom_cost = fields.Float(string='Unit Cost',compute="_uom_cost")
+#     @api.one
+#     def _material_cost(self):
+#         self.material_cost = self.product_qty * self.uom_cost
+#     material_cost = fields.Float(string='Material Cost', compute='_material_cost')
 
-class mrp_bom(models.Model):
-    _inherit = 'mrp.bom'
+# class mrp_bom(models.Model):
+#     _inherit = 'mrp.bom'
 
-    @api.one
-    def _material_cost(self):
-        self.material_cost = sum([l.material_cost for l in self.bom_line_ids])
-    material_cost = fields.Float(string='Material Cost', compute="_material_cost")
+#     @api.one
+#     def _material_cost(self):
+#         self.material_cost = sum([l.material_cost for l in self.bom_line_ids])
+#     material_cost = fields.Float(string='Material Cost', compute="_material_cost")
 
 
-class mrp_bom_line(models.Model):
-    _inherit = 'mrp.bom.line'
+# class mrp_bom_line(models.Model):
+#     _inherit = 'mrp.bom.line'
 
-    @api.one
-    def _uom_cost(self):
-        self.uom_cost = self.product_uom._compute_price(self.product_id.uom_id.id, self.product_id.standard_price, to_uom_id=self.product_uom.id)
-    uom_cost = fields.Float(string='Unit Cost',compute="_uom_cost")
-    @api.one
-    def _material_cost(self):
-        self.material_cost = self.product_qty * self.uom_cost
-    material_cost = fields.Float(string='Material Cost', compute='_material_cost')
+#     @api.one
+#     def _uom_cost(self):
+#         self.uom_cost = self.product_uom._compute_price(self.product_id.uom_id.id, self.product_id.standard_price, to_uom_id=self.product_uom.id)
+#     uom_cost = fields.Float(string='Unit Cost',compute="_uom_cost")
+#     @api.one
+#     def _material_cost(self):
+#         self.material_cost = self.product_qty * self.uom_cost
+#     material_cost = fields.Float(string='Material Cost', compute='_material_cost')
 

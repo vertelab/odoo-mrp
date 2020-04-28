@@ -13,7 +13,7 @@
             </field>
         </record>
 
-        <record id="mrp_production_product_tree_view" model="ir.ui.view">
+<!--         <record id="mrp_production_product_tree_view" model="ir.ui.view">
             <field name="name">mrp.production.product.line.tree.inherit</field>
             <field name="model">mrp.production.product.line</field>
             <field name="inherit_id" ref="mrp.mrp_production_product_tree_view"/>
@@ -39,8 +39,7 @@
                 </field>
             </field>
         </record>
-
-
+ -->
 
     </data>
 </openerp>
