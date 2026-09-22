@@ -7,7 +7,7 @@
 Adds custom logic to make the Manufacturing Order deadline editable.
 """,
     "author": "Your Name",
-    "website": "https://your-company.com",
+    "website": "https://vertel.se/apps/odoo-mrp/mrp_deadline",
     "license": "AGPL-3",
     "depends": ["mrp","sale","stock"],
     "data": [
