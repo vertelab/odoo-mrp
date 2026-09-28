@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Mrp Deadline icon">
+  <!-- Odoo O (purple) -->
+  <circle cx="58" cy="58" r="38" fill="none" stroke="#875A7B" stroke-width="11"/>
+  <rect x="70" y="22" width="22" height="24" fill="#F8FAFC" rx="2"/>
+  <!-- Domain symbol (accent) bottom-right -->
+  <g transform="translate(76, 72) scale(1.05)">
+    <g fill="none" stroke="#F59E0B" stroke-width="2.2">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 1v4M12 19v4M1 12h4M19 12h4M4 4l3 3M17 17l3 3M20 4l-3 3M7 17l-3 3"/></g>
+  </g>
+</svg>
