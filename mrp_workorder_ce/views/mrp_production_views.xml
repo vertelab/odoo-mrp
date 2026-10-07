@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Work order planning menus, ported from the upstream mrp_workorder. -->
+
+    <menuitem id="mrp_workorder_menu_planning"
+        name="Work Orders"
+        sequence="2"
+        parent="mrp.mrp_planning_menu_root"
+        groups="mrp.group_mrp_routings"/>
+    <menuitem id="menu_mrp_workorder_production"
+        name="Planning by Production"
+        sequence="1"
+        action="action_mrp_workorder_dependencies_production"
+        parent="mrp_workorder_menu_planning"/>
+    <menuitem id="menu_mrp_workorder_workcenter"
+        name="Planning by Workcenter"
+        sequence="2"
+        action="action_mrp_workorder_dependencies_workcenter"
+        parent="mrp_workorder_menu_planning"/>
+</odoo>

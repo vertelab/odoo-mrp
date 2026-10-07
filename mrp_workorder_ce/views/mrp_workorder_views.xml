@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Work order Gantt views, ported from the upstream ``mrp_workorder``.
+# The ``js_class="mrp_workorder_gantt"`` variant is
+        registered by ``mrp_workorder_ce/static/src/mrp_workorder_gantt_view.js``
+        and adds the workcenter progress bar to the base ``gantt`` view.
+    -->
+
+    <record id="workcenter_line_gantt_production" model="ir.ui.view">
+        <field name="name">mrp.production.work.order.gantt.production</field>
+        <field name="model">mrp.workorder</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <gantt class="o_mrp_workorder_gantt" date_stop="date_finished" date_start="date_start" string="Operations" default_group_by="production_id" create="0" delete="0"
+                progress="progress" plan="0"
+                decoration-danger="json_popover and 'text-danger' in json_popover"
+                decoration-success="state == 'done'"
+                decoration-warning="state == 'cancel' or (json_popover and 'text-warning' in json_popover)"
+                color="workcenter_id"
+                display_unavailability="0"
+                progress_bar="workcenter_id"
+                total_row="True"
+                js_class="mrp_workorder_gantt"
+                precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full', 'year': 'day:full'}"
+                sample="1"
+                form_view_id="mrp.mrp_production_workorder_form_view_inherit">
+
+                <field name="date_start"/>
+                <field name="state"/>
+                <field name="workcenter_id"/>
+                <field name="json_popover"/>
+
+                <!--
+                    The upstream module declares a ``<templates><t t-name="gantt-popover">``
+                    block here. CE's ``ir.ui.view`` validation only allows
+                    ``t-name`` in qweb-based views (``_is_qweb_based_view``
+                    returns True for kanban only), and ``web_gantt_ce`` does
+                    not override it for gantt yet. The popover falls back to
+                    the generic body from ``web_gantt_ce``; see tasks.md 3.11.
+                -->
+            </gantt>
+        </field>
+    </record>
+
+    <record id="mrp_workorder_view_gantt" model="ir.ui.view">
+        <field name="name">mrp.workorder.view.gantt</field>
+        <field name="model">mrp.workorder</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <gantt class="o_mrp_workorder_gantt" date_stop="date_finished" date_start="date_start" string="Operations" default_group_by="workcenter_id" create="0"
+                delete="0" sample="1"
+                progress="progress" plan="0"
+                decoration-danger="json_popover and 'text-danger' in json_popover"
+                decoration-success="state == 'done'"
+                decoration-warning="state == 'cancel' or (json_popover and 'text-warning' in json_popover)"
+                color="production_id"
+                display_unavailability="1"
+                progress_bar="workcenter_id"
+                total_row="True"
+                js_class="mrp_workorder_gantt"
+                precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full', 'year': 'day:full'}"
+                form_view_id="mrp.mrp_production_workorder_form_view_inherit">
+
+                <field name="date_start"/>
+                <field name="state"/>
+                <field name="workcenter_id"/>
+                <field name="json_popover"/>
+
+                <!-- Popover template dropped: see workcenter_line_gantt_production. -->
+            </gantt>
+        </field>
+    </record>
+
+    <record id="workcenter_line_gantt_production_dependencies" model="ir.ui.view">
+        <field name="name">mrp.production.work.order.gantt.production.dependencies</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="workcenter_line_gantt_production"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//gantt" position="attributes">
+                <attribute name="dependency_field">blocked_by_workorder_ids</attribute>
+                <attribute name="dependency_inverted_field">needed_by_workorder_ids</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_workorder_view_gantt_dependencies" model="ir.ui.view">
+        <field name="name">mrp.workorder.view.gantt.dependencies</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp_workorder_view_gantt"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//gantt" position="attributes">
+                <attribute name="dependency_field">blocked_by_workorder_ids</attribute>
+                <attribute name="dependency_inverted_field">needed_by_workorder_ids</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_mrp_workorder_dependencies_workcenter" model="ir.actions.server">
+        <field name="name">Work Orders Planning</field>
+        <field name="model_id" ref="mrp.model_mrp_workorder"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_mrp_workorder_dependencies('workcenter')
+        </field>
+    </record>
+
+    <record id="action_mrp_workorder_dependencies_production" model="ir.actions.server">
+        <field name="name">Work Orders Planning</field>
+        <field name="model_id" ref="mrp.model_mrp_workorder"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_mrp_workorder_dependencies('production')
+        </field>
+    </record>
+
+    <!--
+        Inherit the core actions instead of creating new ones: the core
+        actions carry the search defaults (``search_default_work_center``,
+        ``ready``, ``waiting``, ``progress``, ``pending``) and the
+        ``path`` attribute used for the menu URLs. Adding ``gantt`` first
+        is the whole point of the port.
+    -->
+    <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_workcenter">
+        <field name="view_mode">gantt,list,form,calendar,pivot,graph</field>
+        <field name="view_id" ref="mrp_workorder_view_gantt"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_production">
+        <field name="view_mode">gantt,list,form,calendar,pivot,graph</field>
+        <field name="view_id" ref="workcenter_line_gantt_production"/>
+    </record>
+
+    <!--
+        The planning menu. In the upstream module these live in ``mrp_production_views.xml``;
+        they are kept here next to the views and actions they point at.
+        ``mrp_workorder_menu_planning`` is the "Work Orders" entry under the
+        core "Planning" root, with the two Gantt views as its children.
+    -->
+    <menuitem id="mrp_workorder_menu_planning"
+        name="Work Orders"
+        sequence="2"
+        parent="mrp.mrp_planning_menu_root"
+        groups="mrp.group_mrp_routings"/>
+    <menuitem id="menu_mrp_workorder_production"
+        name="Planning by Production"
+        sequence="1"
+        action="action_mrp_workorder_dependencies_production"
+        parent="mrp_workorder_menu_planning"/>
+    <menuitem id="menu_mrp_workorder_workcenter"
+        name="Planning by Workcenter"
+        sequence="2"
+        action="action_mrp_workorder_dependencies_workcenter"
+        parent="mrp_workorder_menu_planning"/>
+</odoo>

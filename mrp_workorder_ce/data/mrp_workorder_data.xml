@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+            Shop Floor check types. The records belong to the upstream module's
+            ``mrp_workorder`` (the Shop Floor flow), but the
+            ``quality.point.test_type`` model comes from ``quality_ce``.
+            Loading them from the manifest would break the install of step 1
+            (planning), which must work without the quality fork, so they are
+            loaded here through a method that checks the model registry first.
+            See models/test_type_loader.py.
+        -->
+        <function name="load_shopfloor_test_types" model="mrp.workorder.test.type.loader"/>
+    </data>
+</odoo>
