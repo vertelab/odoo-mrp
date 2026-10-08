@@ -44,7 +44,6 @@ export class MrpDisplay extends Component {
     };
 
     setup() {
-        this.homeMenu = useService("home_menu");
         this.viewService = useService("view");
         this.actionService = useService("action");
         this.dialogService = useService("dialog");
@@ -197,7 +196,10 @@ export class MrpDisplay extends Component {
     }
 
     close() {
-        this.homeMenu.toggle();
+        // Odoo 18 removed the ``home_menu`` service from core ``web`` (the home
+        // menu is now the NavBar's ``menu`` service plus the ``home`` client
+        // action). Use that client action instead of the old service.
+        this.actionService.doAction("home");
     }
 
     async _onBarcodeScanned(barcode) {
