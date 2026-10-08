@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Odoo SA, Open Source Management Solution, third party addon
-#    Copyright (C) 2024- Vertel AB (<https://vertel.se>).
+#    Copyright (C) 2024- Vertel Sverige AB (<https://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -26,7 +26,7 @@
     'sequence': 155,
     'summary': """Manage engineering change orders on products, bills of material for Community Edition""",
     'author': 'Vertel Sverige AB',
-    'maintainer': 'Vertel AB',
+    'maintainer': 'Vertel Sverige AB',
     'website': 'https://vertel.se/apps/odoo-mrp/mrp_plm_ce',
     'repository': 'https://github.com/vertelab/odoo-mrp',
     'license': 'AGPL-3',

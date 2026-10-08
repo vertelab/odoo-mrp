@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Vertel AB, Open Source Management Solution, third party addon
-#    Copyright (C) 2026- Vertel AB (<https://vertel.se>).
+#    Vertel Sverige AB, Open Source Management Solution, third party addon
+#    Copyright (C) 2026- Vertel Sverige AB (<https://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -26,7 +26,7 @@
     'sequence': 51,
     'summary': """Work order planning in Gantt and the Shop Floor (MES) backend.""",
     'author': 'Vertel Sverige AB',
-    'maintainer': 'Vertel AB',
+    'maintainer': 'Vertel Sverige AB',
     'website': 'https://vertel.se/apps/odoo-mrp/mrp_workorder_ce',
     'repository': 'https://github.com/vertelab/odoo-mrp',
     'license': 'AGPL-3',
