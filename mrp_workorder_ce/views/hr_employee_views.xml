@@ -20,7 +20,14 @@
             <field name="model">hr.employee</field>
             <field name="priority" eval="100"/>
             <field name="arch" type="xml">
-                <list multi_edit="0" create="0">
+                <!--
+                    ``js_class="mrp_employee_tree"`` is required by the Shop
+                    Floor employee panel (step 2 spår B2): the custom list
+                    controller in ``static/src/mrp_display/mrp_employee_list/``
+                    turns a row click into ``selectEmployee`` instead of
+                    opening the employee form.
+                -->
+                <list multi_edit="0" create="0" js_class="mrp_employee_tree">
                     <field name="id" column_invisible="1"/>
                     <field name="avatar_128" widget="image" class="o_avatar o_m2o_avatar" groups="hr.group_hr_user"/>
                     <field name="name" readonly="1"/>

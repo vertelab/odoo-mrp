@@ -92,17 +92,24 @@ frontend half and is delivered separately.
         'wizard/propose_change_views.xml',
     ],
     'assets': {
+        # Shop Floor (MES) frontend, step 2 spår B2. Same split as the upstream module's
+        # ``mrp_workorder`` manifest: everything under ``static/src`` except
+        # the Gantt (step 1, lazy) goes into the backend bundle.
         'web.assets_backend': [
-            'mrp_workorder_ce/static/src/mrp_workorder_gantt_view.scss',
+            'mrp_workorder_ce/static/src/**/*.scss',
+            'mrp_workorder_ce/static/src/**/*.js',
+            'mrp_workorder_ce/static/src/**/*.xml',
+            ('remove', 'mrp_workorder_ce/static/src/mrp_workorder_gantt_*'),
         ],
         'web.assets_backend_lazy': [
-            'mrp_workorder_ce/static/src/mrp_workorder_gantt_view.js',
-            'mrp_workorder_ce/static/src/mrp_workorder_gantt_renderer.js',
-            'mrp_workorder_ce/static/src/mrp_workorder_gantt_row_progress_bar.js',
-            'mrp_workorder_ce/static/src/mrp_workorder_gantt_row_progress_bar.xml',
+            'mrp_workorder_ce/static/src/mrp_workorder_gantt_*',
+        ],
+        'web.assets_tests': [
+            'mrp_workorder_ce/static/tests/tours/**/*',
         ],
         'web.assets_unit_tests': [
             'mrp_workorder_ce/static/tests/**/*',
+            ('remove', 'mrp_workorder_ce/static/tests/tours/**/*'),
         ],
     },
     'installable': True,
