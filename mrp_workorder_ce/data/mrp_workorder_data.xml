@@ -11,5 +11,15 @@
             See models/test_type_loader.py.
         -->
         <function name="load_shopfloor_test_types" model="mrp.workorder.test.type.loader"/>
+
+        <record id="tablet_client_action" model="ir.actions.client">
+            <field name="name">Tablet Client Action</field>
+            <field name="tag">tablet_client_action</field>
+            <field name="res_model">mrp_workorder</field>
+        </record>
+
+        <record id="base.group_user" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('mrp_workorder_ce.group_mrp_wo_shop_floor'))]"/>
+        </record>
     </data>
 </odoo>

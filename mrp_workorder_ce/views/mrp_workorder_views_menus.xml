@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Shop Floor menu, ported from the upstream
+        ``mrp_workorder/views/mrp_workorder_views_menus.xml``.
+# The "Shop Floor" root carries the PWA icon and points at the
+        ``action_mrp_display`` client action.
+    -->
+    <menuitem id="menu_mrp_workorder_root"
+        name="Shop Floor"
+        groups="group_mrp_wo_shop_floor"
+        web_icon="mrp_workorder_ce,static/description/mrp_display_icon.png"
+        sequence="146">
+
+        <menuitem id="menu_shop_floor"
+            groups="mrp.group_mrp_user"
+            action="action_mrp_display"/>
+
+    </menuitem>
+</odoo>

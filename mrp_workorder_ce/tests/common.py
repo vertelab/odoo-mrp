@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+#
+# Ported from the upstream ``mrp_workorder/tests/common.py``.
 
-from odoo.tests.common import TransactionCase
+from odoo.addons.mrp.tests.common import TestMrpCommon
 
 
-class TestMrpWorkorderCommon(TransactionCase):
+class TestMrpWorkorderCommon(TestMrpCommon):
 
     @classmethod
     def setUpClass(cls):
