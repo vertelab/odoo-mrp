@@ -3,7 +3,7 @@
     <!--
         Shop Floor menu, ported from the upstream
         ``mrp_workorder/views/mrp_workorder_views_menus.xml``.
-# The "Shop Floor" root carries the PWA icon and points at the
+        The "Shop Floor" root carries the PWA icon and points at the
         ``action_mrp_display`` client action.
     -->
     <menuitem id="menu_mrp_workorder_root"
