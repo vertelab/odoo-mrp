@@ -152,10 +152,18 @@ class MrpWorkorder(models.Model):
         today = datetime.now(utc).replace(hour=0, minute=0, second=0, microsecond=0)
         start = max(start, today)
         if field == 'workcenter_id':
-            return dict(
-                self._gantt_progress_bar_workcenter_id(res_ids, start, stop),
-                warning=_("This workcenter isn't expected to have open workorders during this period. Work hours :"),
-            )
+            bars = self._gantt_progress_bar_workcenter_id(res_ids, start, stop)
+            # ``warning`` is only meaningful for groups that actually have a
+            # progress bar; it must be a string (the OWL component types it as
+            # String). Leave it out entirely when there is nothing to warn
+            # about, so the component's ``optional: true`` applies.
+            for res_id, bar in bars.items():
+                if not bar.get('max_value'):
+                    bar['warning'] = _(
+                        "This workcenter isn't expected to have open workorders "
+                        "during this period. Work hours :"
+                    )
+            return bars
         raise NotImplementedError("This Progress Bar is not implemented.")
 
     @api.model
