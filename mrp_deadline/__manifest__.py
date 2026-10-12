@@ -1,6 +1,6 @@
 {
     "name": "MRP Deadline Editor",
-    "version": "18.0.1.0.0",
+    "version": "18.0.1.0.1",
     "category": "Manufacturing",
     "summary": "Allow manual editing of Manufacturing Order deadline",
     "description": """
