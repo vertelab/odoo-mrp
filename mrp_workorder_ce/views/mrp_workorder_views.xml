@@ -98,6 +98,67 @@
         </field>
     </record>
 
+    <!--
+        Assignment board: who does what.
+
+        The Gantt answers "when", this Kanban answers "who". It is grouped
+        on ``employee_assigned_ids``, the planning field, and dragging a card
+        from one column to another assigns (or unassigns) the employee, which
+        is the standard Kanban grouping behaviour.
+
+        It deliberately shows no dates and never touches ``employee_ids``.
+        That field is the Shop Floor working-time list: writing to it would
+        create a ``mrp.workcenter.productivity`` entry and set the work order
+        to "in progress", i.e. clock the employee in instead of planning them.
+
+        Assigning here is enough for the employee to see the order on the
+        Shop Floor: ``search_is_assigned_to_connected`` filters on
+        ``employee_assigned_ids``, and the Shop Floor card renders it.
+    -->
+    <record id="mrp_workorder_view_kanban_assigned" model="ir.ui.view">
+        <field name="name">mrp.workorder.view.kanban.assigned</field>
+        <field name="model">mrp.workorder</field>
+        <field name="arch" type="xml">
+            <kanban class="o_mrp_workorder_kanban_assigned" default_group_by="employee_assigned_ids" sample="1">
+                <field name="workcenter_id"/>
+                <field name="production_id"/>
+                <field name="operation_id"/>
+                <field name="state"/>
+                <field name="date_start"/>
+                <field name="employee_assigned_ids"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex o_kanban_record_top">
+                            <div class="o_kanban_workorder_title h4 text-truncate">
+                                <field name="production_id"/> - <field name="name"/>
+                            </div>
+                            <div class="h2 ms-2">
+                                <span t-attf-class="badge #{['progress'].indexOf(record.state.raw_value) &gt; -1 ? 'text-bg-warning' : ['ready', 'waiting', 'pending'].indexOf(record.state.raw_value) &gt; -1 ? 'text-bg-primary' : ['done'].indexOf(record.state.raw_value) &gt; -1 ? 'text-bg-success' : 'text-bg-danger'}">
+                                    <field name="state"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column mt-1">
+                            <span t-if="record.operation_id.value" class="text-truncate">
+                                <i class="fa fa-cogs me-1" title="Operation"/><field name="operation_id"/>
+                            </span>
+                            <span t-if="record.workcenter_id.value" class="text-truncate">
+                                <i class="fa fa-industry me-1" title="Work Center"/><field name="workcenter_id"/>
+                            </span>
+                        </div>
+                        <footer>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="employee_assigned_ids" widget="many2many_avatar_employee" options="{'no_create': True}"/>
+                                </div>
+                            </div>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="action_mrp_workorder_dependencies_workcenter" model="ir.actions.server">
         <field name="name">Work Orders Planning</field>
         <field name="model_id" ref="mrp.model_mrp_workorder"/>
@@ -124,12 +185,12 @@
         is the whole point of the port.
     -->
     <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_workcenter">
-        <field name="view_mode">gantt,list,form,calendar,pivot,graph</field>
+        <field name="view_mode">gantt,kanban,list,form,calendar,pivot,graph</field>
         <field name="view_id" ref="mrp_workorder_view_gantt"/>
     </record>
 
     <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_production">
-        <field name="view_mode">gantt,list,form,calendar,pivot,graph</field>
+        <field name="view_mode">gantt,kanban,list,form,calendar,pivot,graph</field>
         <field name="view_id" ref="workcenter_line_gantt_production"/>
     </record>
 
@@ -388,7 +449,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_workcenter">
-        <field name="view_mode">gantt,list,form,calendar,pivot,graph</field>
+        <field name="view_mode">gantt,kanban,list,form,calendar,pivot,graph</field>
         <field name="view_id" ref="mrp_workorder_view_gantt"/>
          <field name="help" type="html">
           <p class="o_view_nocontent_workorder">
@@ -405,7 +466,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_production">
-        <field name="view_mode">gantt,list,form,calendar,pivot,graph</field>
+        <field name="view_mode">gantt,kanban,list,form,calendar,pivot,graph</field>
         <field name="view_id" ref="workcenter_line_gantt_production"/>
          <field name="help" type="html">
           <p class="o_view_nocontent_workorder">
