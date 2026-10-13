@@ -95,6 +95,7 @@ class MrpWorkorder(models.Model):
     main_employee_id = fields.Many2one('hr.employee', string='Assigned To', copy=False,
                                        compute='_compute_main_employee_id',
                                        inverse='_inverse_main_employee_id', store=True,
+                                       group_expand='_read_group_main_employee_id',
                                        help="Employee responsible for this work order. "
                                             "Kept in sync with the assigned employees.")
     # employees connected
@@ -299,6 +300,25 @@ class MrpWorkorder(models.Model):
     def _all_employees_allowed(self):
         for wo in self:
             wo.all_employees_allowed = len(wo.allowed_employees) == 0
+
+    @api.model
+    def _read_group_main_employee_id(self, employees, domain):
+        """Return every employee as a Kanban column, not only the assigned ones.
+
+        Without this, ``read_group`` only yields groups that actually hold
+        records, so the assignment board shows a column per already-assigned
+        employee and nothing to drop onto for everyone else. ``group_expand``
+        lets us widen the set of groups to all employees, which is what makes
+        the board usable for assigning work in the first place.
+
+        Search with ``ir.rule`` applied but access rights bypassed, the same
+        way core does for ``workcenter_id``: the employee list is a grouping
+        axis, not a data disclosure, and a plain search would hide colleagues
+        from users who may assign work but not read the whole HR directory.
+        """
+        search_domain = self.env['ir.rule']._compute_domain(employees._name)
+        employee_ids = employees.sudo()._search(search_domain, order=employees._order)
+        return employees.browse(employee_ids)
 
     @api.depends('employee_assigned_ids')
     def _compute_main_employee_id(self):
