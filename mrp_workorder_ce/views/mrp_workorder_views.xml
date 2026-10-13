@@ -101,10 +101,17 @@
     <!--
         Assignment board: who does what.
 
-        The Gantt answers "when", this Kanban answers "who". It is grouped
-        on ``employee_assigned_ids``, the planning field, and dragging a card
-        from one column to another assigns (or unassigns) the employee, which
-        is the standard Kanban grouping behaviour.
+        The Gantt answers "when", this Kanban answers "who". It is grouped on
+        ``main_employee_id``, the single assigned employee, and dragging a card
+        from one column to another assigns (or unassigns) that employee.
+
+        The grouping field has to be a many2one for the drag to work: Odoo only
+        allows dropping between groups when the group-by field is a many2one
+        (``canResequenceRecords`` in kanban_renderer.js), because a record in a
+        many2many belongs to several groups at once and the drop would be
+        ambiguous. ``main_employee_id`` is a computed many2one with an inverse
+        that writes through to ``employee_assigned_ids``, so the two lists
+        cannot diverge.
 
         It deliberately shows no dates and never touches ``employee_ids``.
         That field is the Shop Floor working-time list: writing to it would
@@ -119,13 +126,14 @@
         <field name="name">mrp.workorder.view.kanban.assigned</field>
         <field name="model">mrp.workorder</field>
         <field name="arch" type="xml">
-            <kanban class="o_mrp_workorder_kanban_assigned" default_group_by="employee_assigned_ids" sample="1">
+            <kanban class="o_mrp_workorder_kanban_assigned" default_group_by="main_employee_id" sample="1">
                 <field name="workcenter_id"/>
                 <field name="production_id"/>
                 <field name="operation_id"/>
                 <field name="state"/>
                 <field name="date_start"/>
                 <field name="employee_assigned_ids"/>
+                <field name="main_employee_id"/>
                 <templates>
                     <t t-name="card">
                         <div class="d-flex o_kanban_record_top">
@@ -264,7 +272,9 @@
                 <attribute name="column_invisible">True</attribute>
             </xpath>
             <xpath expr="//field[@name='workcenter_id']" position="after">
-                <field name="employee_assigned_ids" widget="many2many_avatar_employee"/>
+                <field name="main_employee_id"
+                       domain="['|',(all_employees_allowed , '=', True),('id', 'in', allowed_employees)]"/>
+                <field name="employee_assigned_ids" widget="many2many_avatar_employee" readonly="1"/>
             </xpath>
             <xpath expr="//header" position="inside">
                 <button name="action_open_mes" type="object" icon="oi-view-kanban" string="Open Shop Floor" groups="mrp_workorder_ce.group_mrp_wo_shop_floor" invisible="state in ['done', 'cancel']"/>
@@ -287,6 +297,7 @@
             <xpath expr="//field[@name='name']" position="after">
                     <field name="allowed_employees" column_invisible="True"/>
                     <field name="all_employees_allowed" column_invisible="True"/>
+                    <field name="main_employee_id" widget="many2one_avatar_employee"/>
                     <field name="employee_assigned_ids" widget="many2many_avatar_user" domain="not all_employees_allowed and [('id','in',allowed_employees)] or []" optional="hidden"/>
             </xpath>
         </field>

@@ -21,7 +21,7 @@
 
 {
     'name': 'MRP: Work Orders CE',
-    'version': '18.0.1.1.4',
+    'version': '18.0.1.1.8',
     'category': 'Manufacturing/Manufacturing',
     'sequence': 51,
     'summary': """Work order planning in Gantt and the Shop Floor (MES) backend.""",

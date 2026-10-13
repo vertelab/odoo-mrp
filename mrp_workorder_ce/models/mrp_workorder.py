@@ -76,6 +76,27 @@ class MrpWorkorder(models.Model):
     # employees assigned to the wo
     employee_assigned_ids = fields.Many2many('hr.employee', 'mrp_workorder_employee_assigned',
                                              'workorder_id', 'employee_id', string='Assigned', copy=False)
+    # the employee this work order is assigned to, as a single record.
+    #
+    # ``employee_assigned_ids`` is a many2many, so the assignment Kanban cannot
+    # be grouped on it: Odoo only allows dragging records between groups when
+    # the group-by field is a many2one (see ``canResequenceRecords`` in
+    # ``web/static/src/views/kanban/kanban_renderer.js``), because a record in a
+    # many2many belongs to several groups at once and the drop would be
+    # ambiguous.
+    #
+    # This field is the many2one the Kanban groups on. It is a computed field
+    # with an inverse rather than a second stored list, so the two can never
+    # diverge: reading it returns the first assigned employee, and writing it
+    # (a Kanban drag, or the form) updates ``employee_assigned_ids``.
+    #
+    # It also removes the guesswork from ``employee_assigned_ids[0]``, which the
+    # time tracking used as "the" employee even though a many2many has no order.
+    main_employee_id = fields.Many2one('hr.employee', string='Assigned To', copy=False,
+                                       compute='_compute_main_employee_id',
+                                       inverse='_inverse_main_employee_id', store=True,
+                                       help="Employee responsible for this work order. "
+                                            "Kept in sync with the assigned employees.")
     # employees connected
     connected_employee_ids = fields.Many2many('hr.employee', search='search_is_assigned_to_connected', store=False)
 
@@ -279,6 +300,33 @@ class MrpWorkorder(models.Model):
         for wo in self:
             wo.all_employees_allowed = len(wo.allowed_employees) == 0
 
+    @api.depends('employee_assigned_ids')
+    def _compute_main_employee_id(self):
+        for wo in self:
+            wo.main_employee_id = wo.employee_assigned_ids[:1]
+
+    def _inverse_main_employee_id(self):
+        """Keep ``employee_assigned_ids`` in sync with the single assigned employee.
+
+        Assigning adds the employee to the list, keeping any others already
+        there. Clearing, or switching to someone else, removes only the
+        employee that was there before, so unassigning the responsible one does
+        not silently drop the rest of the team.
+
+        The previous value is not readable from the field: the inverse runs
+        after the new value is in place. ``write`` captures it beforehand and
+        passes it in the context.
+        """
+        previous = self.env.context.get('_previous_main_employee', {})
+        for wo in self:
+            assigned = set(wo.employee_assigned_ids.ids)
+            old_id = previous.get(wo.id)
+            if old_id and old_id != wo.main_employee_id.id:
+                assigned.discard(old_id)
+            if wo.main_employee_id:
+                assigned.add(wo.main_employee_id.id)
+            wo.employee_assigned_ids = [Command.set(list(assigned))]
+
     def search_is_assigned_to_connected(self, operator, value):
         # retrieving employees connected in the session
         main_employee_connected = self.env['hr.employee'].get_session_owner()
@@ -293,6 +341,13 @@ class MrpWorkorder(models.Model):
     # --------------------------
 
     def write(self, values):
+        if 'main_employee_id' in values:
+            # The inverse cannot see the value being replaced: by the time it
+            # runs the field already holds the new one. Capture it here, before
+            # the write, and pass it along so the inverse knows which employee
+            # to drop from ``employee_assigned_ids``.
+            previous = {wo.id: wo.main_employee_id.id for wo in self}
+            self = self.with_context(_previous_main_employee=previous)
         res = super().write(values)
         if 'qty_producing' in values:
             for wo in self:
