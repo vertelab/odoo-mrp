@@ -191,15 +191,31 @@
         ``ready``, ``waiting``, ``progress``, ``pending``) and the
         ``path`` attribute used for the menu URLs. Adding ``gantt`` first
         is the whole point of the port.
+
+        ``kanban`` is pinned to our assignment board. Without an explicit
+        entry Odoo picks the Kanban by priority and then by id, and the core
+        ``mrp.workcenter_line_kanban`` (grouped on the manufacturing order)
+        wins over ours, as all three Kanban views share priority 16.
+
+        The pinning goes through ``view_ids``, not ``views``. ``views`` looks
+        like the obvious field, but on ``ir.actions.act_window`` it is a
+        computed view of ``view_ids`` and silently drops the view ids you
+        assign to it; only ``view_ids`` actually persists. ``view_id`` must
+        stay unset for the same reason: when it is set, Odoo rebuilds the
+        view list around it and the Kanban entry is lost again.
     -->
     <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_workcenter">
         <field name="view_mode">gantt,kanban,list,form,calendar,pivot,graph</field>
-        <field name="view_id" ref="mrp_workorder_view_gantt"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'sequence': 1, 'view_mode': 'gantt', 'view_id': ref('mrp_workorder_view_gantt')}),
+            (0, 0, {'sequence': 2, 'view_mode': 'kanban', 'view_id': ref('mrp_workorder_view_kanban_assigned')})]"/>
     </record>
 
     <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_production">
         <field name="view_mode">gantt,kanban,list,form,calendar,pivot,graph</field>
-        <field name="view_id" ref="workcenter_line_gantt_production"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'sequence': 1, 'view_mode': 'gantt', 'view_id': ref('workcenter_line_gantt_production')}),
+            (0, 0, {'sequence': 2, 'view_mode': 'kanban', 'view_id': ref('mrp_workorder_view_kanban_assigned')})]"/>
     </record>
 
     <!--
@@ -461,7 +477,17 @@
 
     <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_workcenter">
         <field name="view_mode">gantt,kanban,list,form,calendar,pivot,graph</field>
-        <field name="view_id" ref="mrp_workorder_view_gantt"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'sequence': 1, 'view_mode': 'gantt', 'view_id': ref('mrp_workorder_view_gantt')}),
+            (0, 0, {'sequence': 2, 'view_mode': 'kanban', 'view_id': ref('mrp_workorder_view_kanban_assigned')})]"/>
+        <!--
+            The context is rewritten rather than inherited. Core ships
+            ``search_default_production`` here, which groups by manufacturing
+            order and overrides the Kanban's own ``default_group_by``; the
+            assignment board would come up grouped on MOs no matter what the
+            view said. The state filters are kept.
+        -->
+        <field name="context">{'search_default_ready': True, 'search_default_waiting': True, 'search_default_progress': True, 'search_default_pending': True}</field>
          <field name="help" type="html">
           <p class="o_view_nocontent_workorder">
             No work orders to do!
@@ -478,7 +504,12 @@
 
     <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_production">
         <field name="view_mode">gantt,kanban,list,form,calendar,pivot,graph</field>
-        <field name="view_id" ref="workcenter_line_gantt_production"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'sequence': 1, 'view_mode': 'gantt', 'view_id': ref('workcenter_line_gantt_production')}),
+            (0, 0, {'sequence': 2, 'view_mode': 'kanban', 'view_id': ref('mrp_workorder_view_kanban_assigned')})]"/>
+        <!-- See the workcenter action above: ``search_default_production`` is
+             dropped so the Kanban can group on the assigned employee. -->
+        <field name="context">{'search_default_ready': True, 'search_default_waiting': True, 'search_default_progress': True, 'search_default_pending': True}</field>
          <field name="help" type="html">
           <p class="o_view_nocontent_workorder">
             No work orders to do!
