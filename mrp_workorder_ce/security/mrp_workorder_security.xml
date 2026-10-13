@@ -9,5 +9,14 @@
             <field name="name">Manage your manufacturing orders from the shop floor display app</field>
             <field name="category_id" ref="base.module_category_hidden"/>
         </record>
+        <!-- Marks the users allowed to plan work: assigning employees to work
+             orders (``mrp.workorder.employee_assigned_ids``) and seeing every
+             work order, not only their own. No access rule is attached yet on
+             purpose: the group is the placeholder for that decision. -->
+        <record id="group_mrp_wo_plan_work" model="res.groups">
+            <field name="name">Plan work orders</field>
+            <field name="category_id" ref="base.module_category_manufacturing"/>
+            <field name="implied_ids" eval="[(4, ref('mrp.group_mrp_user'))]"/>
+        </record>
     </data>
 </odoo>
